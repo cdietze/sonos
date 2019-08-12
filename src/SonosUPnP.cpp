@@ -109,6 +109,9 @@ const char p_GetTransportInfoA[] PROGMEM = SONOS_TAG_GET_TRANSPORT_INFO;
 const char p_GetTransportInfoR[] PROGMEM = SONOS_TAG_GET_TRANSPORT_INFO_RESPONSE;
 const char p_CurrentTransportState[] PROGMEM = SONOS_TAG_CURRENT_TRANSPORT_STATE;
 
+const char p_AmazonAddressTemplate[] PROGMEM = SONOS_AMAZON_ADDRESS_TEMPLATE;
+const char p_AmazonMeta[] PROGMEM = SONOS_AMAZON_META;
+
 SonosUPnP::SonosUPnP(WiFiClient client, void (*ethernetErrCallback)(void))
 {
   #ifndef SONOS_WRITE_ONLY_MODE
@@ -117,7 +120,6 @@ SonosUPnP::SonosUPnP(WiFiClient client, void (*ethernetErrCallback)(void))
   this->ethClient = client;
   this->ethernetErrCallback = ethernetErrCallback;
 }
-
 
 void SonosUPnP::setAVTransportURI(IPAddress speakerIP, const char *scheme, const char *address)
 {
@@ -295,6 +297,15 @@ void SonosUPnP::addTrackToQueue(IPAddress speakerIP, const char *scheme, const c
   upnpSet(
     speakerIP, UPNP_AV_TRANSPORT, p_AddURIToQueue,
     SONOS_TAG_ENQUEUED_URI, scheme, address, p_PlaylistMetaLightStart, p_PlaylistMetaLightEnd, "");
+}
+
+void SonosUPnP::addAmazonAlbumToQueue(IPAddress speakerIP, const char *albumID)
+{
+  char address[100];
+  sprintf_P(address, p_AmazonAddressTemplate, albumID);
+  upnpSet(
+    speakerIP, UPNP_AV_TRANSPORT, p_AddURIToQueue,
+    SONOS_TAG_ENQUEUED_URI, SONOS_SOURCE_AMAZON_SCHEME, address, "", "", p_AmazonMeta);
 }
 
 void SonosUPnP::removeAllTracksFromQueue(IPAddress speakerIP)

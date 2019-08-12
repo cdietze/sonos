@@ -175,6 +175,7 @@
 #define SONOS_SOURCE_LINEIN_SCHEME "x-rincon-stream:"
 #define SONOS_SOURCE_MASTER_SCHEME "x-rincon:"
 #define SONOS_SOURCE_QUEUE_SCHEME "x-rincon-queue:"
+#define SONOS_SOURCE_AMAZON_SCHEME "x-rincon-cpcontainer:"
 
 // Volume, bass & treble:
 /*
@@ -270,6 +271,9 @@
 #define SONOS_STATE_STOPPED 3
 #define SONOS_STATE_STOPPED_VALUE "STOPPED"
 
+#define SONOS_AMAZON_ADDRESS_TEMPLATE "1004206ccatalog%%2falbums%%2f%s%%2f%%23album_desc?sid=201&amp;flags=8300&amp;sn=4"
+#define SONOS_AMAZON_META "<EnqueuedURIMetaData>&lt;DIDL-Lite xmlns:dc=&quot;http://purl.org/dc/elements/1.1/&quot; xmlns:upnp=&quot;urn:schemas-upnp-org:metadata-1-0/upnp/&quot; xmlns:r=&quot;urn:schemas-rinconnetworks-com:metadata-1-0/&quot; xmlns=&quot;urn:schemas-upnp-org:metadata-1-0/DIDL-Lite/&quot;&gt;&lt;item id=&quot;1004206ccatalogB0727SH7LW%2f%23album_desc&quot; parentID=&quot;10052064catalog%2fartists%2f&quot; restricted=&quot;true&quot;&gt;  &lt;dc:title&gt;&quot;&quot;&lt;/dc:title&gt;  &lt;upnp:class&gt;object.container.album.musicAlbum&lt;/upnp:class&gt;  &lt;desc id=&quot;cdudn&quot; nameSpace=&quot;urn:schemas-rinconnetworks-com:metadata-1-0/&quot;&gt;SA_RINCON51463_X_#Svc51463-0-Token&lt;/desc&gt;&lt;/item&gt;&lt;/DIDL-Lite&gt;</EnqueuedURIMetaData><DesiredFirstTrackNumberEnqueued>0</DesiredFirstTrackNumberEnqueued><EnqueueAsNext>0</EnqueueAsNext>"
+
 struct TrackInfo
 {
   uint16_t number;
@@ -309,6 +313,7 @@ class SonosUPnP
     void setStatusLight(IPAddress speakerIP, bool state);
     void addPlaylistToQueue(IPAddress speakerIP, uint16_t playlistIndex);
     void addTrackToQueue(IPAddress speakerIP, const char *scheme, const char *address);
+    void addAmazonAlbumToQueue(IPAddress speakerIP, const char *albumID);
     void removeAllTracksFromQueue(IPAddress speakerIP);
     
     #ifndef SONOS_WRITE_ONLY_MODE
