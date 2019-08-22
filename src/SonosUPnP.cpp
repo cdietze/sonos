@@ -522,7 +522,7 @@ bool SonosUPnP::getMute(IPAddress speakerIP)
 
 uint8_t SonosUPnP::getVolume(IPAddress speakerIP)
 {
-  getVolume(speakerIP, SONOS_CHANNEL_MASTER);
+  return getVolume(speakerIP, SONOS_CHANNEL_MASTER);
 }
 
 uint8_t SonosUPnP::getVolume(IPAddress speakerIP, const char *channel)
@@ -725,6 +725,8 @@ PGM_P SonosUPnP::getUpnpService(uint8_t upnpMessageType)
     case UPNP_RENDERING_CONTROL: return p_UpnpRenderingControlService;
     case UPNP_DEVICE_PROPERTIES: return p_UpnpDevicePropertiesService;
   }
+  Serial.printf("ERROR: unknown upnpMessageType: %d\n", upnpMessageType);
+  abort();
 }
 
 PGM_P SonosUPnP::getUpnpEndpoint(uint8_t upnpMessageType)
@@ -735,6 +737,8 @@ PGM_P SonosUPnP::getUpnpEndpoint(uint8_t upnpMessageType)
     case UPNP_RENDERING_CONTROL: return p_UpnpRenderingControlEndpoint;
     case UPNP_DEVICE_PROPERTIES: return p_UpnpDevicePropertiesEndpoint;
   }
+  Serial.printf("ERROR: unknown upnpMessageType: %d\n", upnpMessageType);
+  abort();
 }
 
 void SonosUPnP::ethClient_write(const char *data)
